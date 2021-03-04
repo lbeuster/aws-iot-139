@@ -1,5 +1,6 @@
 package lbe.test.iot;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import software.amazon.awssdk.crt.io.ClientBootstrap;
@@ -13,14 +14,20 @@ class AwsShutdownTest {
 
     private static final String ENDPOINT = "doesnt.matter";
 
+    @BeforeAll
+    static void setUpAwsLogging() {
+        System.setProperty("aws.crt.debugnative", "true");
+        System.setProperty("aws.crt.log.destination", "File");
+        System.setProperty("aws.crt.log.level", "Trace");
+        System.setProperty("aws.crt.log.filename", "aws-iot.log");
+    }
+
     /**
      *
      */
     @Test
     void test() throws Exception {
         MqttClientConnection client = newClient();
-        // client.connect().get();
-        // client.publish(new MqttMessage("test", "MESSAGE".getBytes(), QualityOfService.AT_LEAST_ONCE));
         client.close();
     }
 
